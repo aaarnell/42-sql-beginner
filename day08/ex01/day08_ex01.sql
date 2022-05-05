@@ -1,0 +1,39 @@
+--Сессия №1
+--Проверим уровень изоляции
+SHOW TRANSACTION ISOLATION LEVEL;
+
+--Сессия №2
+--Проверим уровень изоляции
+SHOW TRANSACTION ISOLATION LEVEL;
+
+--Сессия №1
+--Начало транзакции
+BEGIN;
+--Проверим рейтинг пиццерии Пицца Хат
+SELECT * FROM pizzeria WHERE id = 1;
+--Зададим рейтинг Пицца Хат =4
+UPDATE pizzeria SET rating = 4 WHERE id = 1;
+
+--Сессия №2
+--Начало транзакции
+BEGIN;
+--Проверим рейтинг пиццерии Пицца Хат
+SELECT * FROM pizzeria WHERE id = 1;
+--Зададим рейтинг Пицца Хат =3.6
+UPDATE pizzeria SET rating = 3.6 WHERE id = 1;
+
+--Сессия №1
+--Опубликуем изменения
+COMMIT;
+
+--Сессия №2
+--Опубликуем изменения
+COMMIT;
+
+--Сессия №1
+--Проверим рейтинг пиццерии Пицца Хат
+SELECT * FROM pizzeria WHERE id = 1;
+
+--Сессия №2
+--Проверим рейтинг пиццерии Пицца Хат
+SELECT * FROM pizzeria WHERE id = 1;
